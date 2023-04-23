@@ -1,1 +1,8 @@
+marinetraffic:
+  url: 'https://services.marinetraffic.com/api/exportvesseltrack/{apikey}/v:3/mmsi:{mmsi}/msgtype:simple/protocol:jsono/fromdate:{fromdate}/todate:{todate}'
+  apikey: 1234567890
 
+ais:
+  reader:
+    start-date: 2019-01-01
+    mmsi: 12345678901

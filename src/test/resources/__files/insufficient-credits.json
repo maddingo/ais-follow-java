@@ -1,0 +1,8 @@
+{
+  "errors": [
+    {
+      "code": "5a2",
+      "detail": "INSUFFICIENT CREDITS. You currently have 4 credits while 22 is\/are required to fulfil this API call. You can purchase additional credits at: https:\/\/www.marinetraffic.com\/en\/online-services\/plans?id=credits"
+    }
+  ]
+}

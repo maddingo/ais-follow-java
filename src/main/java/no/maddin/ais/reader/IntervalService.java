@@ -7,6 +7,10 @@ import reactor.core.publisher.Flux;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * Split up the period from the last data in the database until today in intervals.
+ * Marine Traffic has a maximum interval of 190 days.
+ */
 @Component
 public class IntervalService {
 

@@ -1,8 +1,8 @@
 de.flapdoodle.mongodb.embedded.version: 4.0.5
-spring:
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/test
+#spring:
+#  data:
+#    mongodb:
+#      uri: mongodb://localhost:27017/test
 
 marinetraffic:
   url: 'https://ais-tempus.free.beeceptor.com/exportvesseltrack/12345?shipid={mmsi}&mmsi={mmsi}'
@@ -11,4 +11,7 @@ marinetraffic:
   last_days: 1
   period: ALL
 
-debug: true
+debug: false
+logging:
+  level:
+    de.flapdoodle: error

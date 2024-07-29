@@ -51,7 +51,7 @@ import static org.hamcrest.Matchers.hasProperty;
 class AisReaderServiceTest {
 
     @RegisterExtension
-    static WireMockExtension wm = WireMockExtension.newInstance()
+    static final WireMockExtension wm = WireMockExtension.newInstance()
         .options(wireMockConfig().dynamicPort().dynamicHttpsPort())
         .build();
 
@@ -110,8 +110,6 @@ class AisReaderServiceTest {
 
     @Test
     void readSimpleAis() {
-
-        log.info("environment: {}", environment);
 
         var timestamp1 = LocalDateTime.now().minusDays(1).minusSeconds(60).withNano(0);
         var timestamp2 = timestamp1.plusSeconds(60).withNano(0);
@@ -182,8 +180,6 @@ class AisReaderServiceTest {
     @ParameterizedTest
     @ValueSource(strings = {"max-polling-period.json"})
     void readExceededPollingPeriod(String resultFile) {
-
-            log.info("environment: {}", environment);
 
             wm.stubFor(get("/exportvesseltrack/1234567890")
                 .willReturn(aResponse()

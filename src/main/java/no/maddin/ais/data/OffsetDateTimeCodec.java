@@ -7,7 +7,6 @@ import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 
 public class OffsetDateTimeCodec implements Codec<OffsetDateTime> {
     @Override

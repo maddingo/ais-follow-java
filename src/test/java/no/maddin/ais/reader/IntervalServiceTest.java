@@ -13,7 +13,7 @@ class IntervalServiceTest {
     void intervals(int nboIntervals) {
         int expectedIntervals = nboIntervals + 1;
         IntervalService intervalService = new IntervalService();
-        LocalDate startDate = LocalDate.now().minusDays(nboIntervals*190);
+        LocalDate startDate = LocalDate.now().minusDays(nboIntervals*190L);
 
         var intervals = intervalService.intervals(startDate, LocalDate.now()).log();
 

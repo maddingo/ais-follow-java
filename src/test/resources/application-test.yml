@@ -1,4 +1,3 @@
-de.flapdoodle.mongodb.embedded.version: 4.0.5
 #spring:
 #  data:
 #    mongodb:
@@ -11,7 +10,7 @@ marinetraffic:
   last_days: 1
   period: ALL
 
-debug: false
+debug: true
 logging:
   level:
     de.flapdoodle: error

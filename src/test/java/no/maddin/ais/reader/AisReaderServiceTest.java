@@ -18,6 +18,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.test.StepVerifier;
 
 import java.time.LocalDate;
@@ -43,12 +46,15 @@ import static org.hamcrest.Matchers.hasProperty;
     "marinetraffic.url=http://localhost:${wiremock.server.port}/exportvesseltrack/{apikey}",
     "ais.reader.mmsi=123456789",
 //    "ais.reader.start-date=2018-01-01",
-    "spring.data.mongodb.host=localhost",
-    "spring.data.mongodb.port=27017",
-    "server.data.mongodb.database=ais-reader-test",
+    "spring.data.mongodb.database=ais-reader-test",
+    "spring.data.mongodb.uri=${mongodb.uri}"
 })
 @Slf4j
+@Testcontainers
 class AisReaderServiceTest {
+
+    @Container
+    static final MongoDBContainer mongodb = new MongoDBContainer("mongo:8.0.0-noble").withExposedPorts(27017);
 
     @RegisterExtension
     static final WireMockExtension wm = WireMockExtension.newInstance()
@@ -57,8 +63,16 @@ class AisReaderServiceTest {
 
     @DynamicPropertySource
     static void registerPgProperties(DynamicPropertyRegistry registry) {
-        registry.add("wiremock.server.port", () -> wm.getPort());
+        registry.add("wiremock.server.port", wm::getPort);
         registry.add("ais.reader.start-date", () -> LocalDate.now().minusDays(1).format(DateTimeFormatter.ISO_LOCAL_DATE));
+        /*
+        "spring.data.mongodb.host=localhost",
+        "spring.data.mongodb.port=27017",
+        */
+        registry.add("mongodb.uri", () -> {
+            log.info("mongodb url: {}", mongodb.getConnectionString());
+            return mongodb.getConnectionString();
+        });
     }
 
     @Autowired

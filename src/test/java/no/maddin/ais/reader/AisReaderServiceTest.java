@@ -65,14 +65,7 @@ class AisReaderServiceTest {
     static void registerPgProperties(DynamicPropertyRegistry registry) {
         registry.add("wiremock.server.port", wm::getPort);
         registry.add("ais.reader.start-date", () -> LocalDate.now().minusDays(1).format(DateTimeFormatter.ISO_LOCAL_DATE));
-        /*
-        "spring.data.mongodb.host=localhost",
-        "spring.data.mongodb.port=27017",
-        */
-        registry.add("mongodb.uri", () -> {
-            log.info("mongodb url: {}", mongodb.getConnectionString());
-            return mongodb.getConnectionString();
-        });
+        registry.add("mongodb.uri", () -> mongodb.getConnectionString());
     }
 
     @Autowired

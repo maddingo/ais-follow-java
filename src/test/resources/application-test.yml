@@ -13,4 +13,4 @@ marinetraffic:
 debug: true
 logging:
   level:
-    de.flapdoodle: error
+    org.springframework.data.mongodb: debug

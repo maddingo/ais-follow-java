@@ -29,7 +29,7 @@ public class MongoDbConfig {
         );
         return MongoClientSettings.builder()
             .codecRegistry(myRegistry)
-                .applyConnectionString(new ConnectionString(env.getProperty("spring.data.mongodb.uri")))
+            .applyConnectionString(new ConnectionString(env.getProperty("spring.data.mongodb.uri")))
             .build();
     }
 

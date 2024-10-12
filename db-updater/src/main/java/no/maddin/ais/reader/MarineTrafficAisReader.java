@@ -78,7 +78,7 @@ public class MarineTrafficAisReader implements AisReader {
                 try {
                     return Mono.just(objectMapper.readValue(eTxt, MarineTrafficError.class));
                 } catch (JsonProcessingException e) {
-                    return Mono.error(new RuntimeException(e));
+                    return Mono.error(new RuntimeException(eTxt, e));
                 }
             })
             .map(MarineTrafficError::getErrors)

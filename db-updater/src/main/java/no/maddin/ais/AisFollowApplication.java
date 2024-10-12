@@ -11,13 +11,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.stream.StreamSupport;
 
 @SpringBootApplication
 @RequiredArgsConstructor
 @Slf4j
-public class AisFollowApplication implements CommandLineRunner {
+public class AisFollowApplication {
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(AisFollowApplication.class)
@@ -28,13 +32,16 @@ public class AisFollowApplication implements CommandLineRunner {
     private final AisReaderService aisReaderService;
     private final ApplicationContext applicationContext;
 
-    @Override
-    public void run(String... args) {
-        var data = aisReaderService.readAis()
-            .log("main")
-            .blockLast(Duration.ofHours(1L));
+    @Bean
+    @Profile("!test")
+    CommandLineRunner runner() {
+        return args -> {
+            var data = aisReaderService.readAis()
+                .log("main")
+                .blockLast(Duration.ofHours(1L));
 
-        log.info("Last Record: {}", data);
-        SpringApplication.exit(applicationContext, () -> data != null ? 0 : 2);
+            log.info("Last Record: {}", data);
+            SpringApplication.exit(applicationContext, () -> data != null ? 0 : 2);
+        };
     }
 }

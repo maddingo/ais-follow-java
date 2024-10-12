@@ -2,6 +2,8 @@ package no.maddin.ais.reader;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import lombok.extern.slf4j.Slf4j;
+import no.maddin.ais.AisFollowApplication;
+import no.maddin.ais.config.MarineTrafficProperties;
 import no.maddin.ais.data.AisData;
 import no.maddin.ais.repository.AisDataReactiveRepository;
 import org.hamcrest.Matchers;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
@@ -39,19 +42,25 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasProperty;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.NONE
+)
 @ActiveProfiles("test")
 @TestPropertySource(properties = {
     "marinetraffic.api-key=1234567890",
     "marinetraffic.url=http://localhost:${wiremock.server.port}/exportvesseltrack/{apikey}",
     "ais.reader.mmsi=123456789",
+    "ais.reader.type=marinetraffic",
 //    "ais.reader.start-date=2018-01-01",
     "spring.data.mongodb.database=ais-reader-test",
     "spring.data.mongodb.uri=${mongodb.uri}"
 })
 @Slf4j
 @Testcontainers
-class AisReaderServiceTest {
+class MarineTrafficAisReaderServiceTest {
+
+    @Mock
+    AisFollowApplication application;
 
     @Container
     static final MongoDBContainer mongodb = new MongoDBContainer("mongo:8.0.0-noble").withExposedPorts(27017);

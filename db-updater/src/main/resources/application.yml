@@ -1,8 +1,16 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/test
+
 marinetraffic:
   url: 'https://services.marinetraffic.com/api/exportvesseltrack/{apikey}/v:3/mmsi:{mmsi}/msgtype:simple/protocol:jsono/fromdate:{fromdate}/todate:{todate}'
   apikey: 1234567890
 
 ais:
   reader:
+    type: marinetraffic
+#    type: vesselfinder
     start-date: 2019-01-01
-    mmsi: 12345678901
+    mmsi: 12345678901 # tempus
+    #mmsi: 257961640 # Mania

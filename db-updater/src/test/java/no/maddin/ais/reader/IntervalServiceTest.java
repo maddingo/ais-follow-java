@@ -5,6 +5,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.test.StepVerifier;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 class IntervalServiceTest {
 
@@ -12,10 +13,9 @@ class IntervalServiceTest {
     @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
     void intervals(int nboIntervals) {
         int expectedIntervals = nboIntervals + 1;
-        IntervalService intervalService = new IntervalService();
-        LocalDate startDate = LocalDate.now().minusDays(nboIntervals*190L);
+        LocalDateTime startTime = LocalDateTime.now().minusDays(nboIntervals*190L);
 
-        var intervals = intervalService.intervals(startDate, LocalDate.now()).log();
+        var intervals = MarineTrafficAisReader.intervals(startTime, LocalDateTime.now()).log();
 
         StepVerifier.create(intervals)
             .expectNextCount(expectedIntervals)

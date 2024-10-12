@@ -46,7 +46,6 @@ public class AisData {
     private String heading;
 
     @JsonProperty("TIMESTAMP")
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX", locale = "en_US", timezone = "UTC")
     private OffsetDateTime timestamp;
 
     @JsonProperty("SHIP_ID")

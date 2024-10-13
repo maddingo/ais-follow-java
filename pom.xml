@@ -13,10 +13,12 @@
         <module>ui</module>
     </modules>
     <properties>
-        <java.version>21</java.version>
         <vaadin.version>24.4.12</vaadin.version>
         <testcontainers.version>1.20.1</testcontainers.version>
         <spring.version>3.3.4</spring.version>
+        <maven.compiler.proc>full</maven.compiler.proc>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
     </properties>
 
     <dependencyManagement>

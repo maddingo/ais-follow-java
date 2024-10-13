@@ -2,8 +2,6 @@ package no.maddin.ais.reader;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import lombok.extern.slf4j.Slf4j;
-import no.maddin.ais.AisFollowApplication;
-import no.maddin.ais.config.MarineTrafficProperties;
 import no.maddin.ais.data.AisData;
 import no.maddin.ais.repository.AisDataReactiveRepository;
 import org.hamcrest.Matchers;
@@ -13,10 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -59,9 +55,6 @@ import static org.hamcrest.Matchers.hasProperty;
 @Testcontainers
 class MarineTrafficAisReaderServiceTest {
 
-    @Mock
-    AisFollowApplication application;
-
     @Container
     static final MongoDBContainer mongodb = new MongoDBContainer("mongo:8.0.0-noble").withExposedPorts(27017);
 
@@ -74,7 +67,7 @@ class MarineTrafficAisReaderServiceTest {
     static void registerPgProperties(DynamicPropertyRegistry registry) {
         registry.add("wiremock.server.port", wm::getPort);
         registry.add("ais.reader.start-date", () -> LocalDate.now().minusDays(1).format(DateTimeFormatter.ISO_LOCAL_DATE));
-        registry.add("mongodb.uri", () -> mongodb.getConnectionString());
+        registry.add("mongodb.uri", mongodb::getConnectionString);
     }
 
     @Autowired
@@ -82,9 +75,6 @@ class MarineTrafficAisReaderServiceTest {
 
     @Autowired
     AisDataReactiveRepository aisDataReactiveRepository;
-
-    @Autowired
-    private Environment environment;
 
     @BeforeEach
     void setUp() {

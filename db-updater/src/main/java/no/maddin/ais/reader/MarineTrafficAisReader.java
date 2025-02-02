@@ -44,27 +44,24 @@ public class MarineTrafficAisReader implements AisReader {
         return intervals(startDate, endDate)
             .parallel()
             .runOn(Schedulers.parallel())
-            .flatMap(dataInterval -> {
-                return webClient
-                    .get()
-                    .uri(uriBuilder -> uriBuilder
-                        .build(Map.of(
-                            "fromdate", startDate.format(DATE_TIME_FORMATTER),
-                            "todate", endDate.format(DATE_TIME_FORMATTER))
-                        )
+            .flatMap(dataInterval -> webClient
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                    .build(Map.of(
+                        "fromdate", startDate.format(DATE_TIME_FORMATTER),
+                        "todate", endDate.format(DATE_TIME_FORMATTER))
                     )
-                    .exchangeToFlux(response -> {
-                            if (response.statusCode().is2xxSuccessful()) {
-                                return response.bodyToFlux(AisData.class);
-                            } else if (response.statusCode().is4xxClientError()) {
-                                log.info("Got response: {}", response);
-                                return errorFromResponse(response);
-                            }
-                            return Flux.error(new RuntimeException("Unhandled Status: " + response.statusCode()));
+                )
+                .exchangeToFlux(response -> {
+                        if (response.statusCode().is2xxSuccessful()) {
+                            return response.bodyToFlux(AisData.class);
+                        } else if (response.statusCode().is4xxClientError()) {
+                            log.info("Got response: {}", response);
+                            return errorFromResponse(response);
                         }
-                    ).log();
-
-            });
+                        return Flux.error(new RuntimeException("Unhandled Status: " + response.statusCode()));
+                    }
+                ).log());
 
 
     }
@@ -89,9 +86,8 @@ public class MarineTrafficAisReader implements AisReader {
     }
 
     /**
-     * MarineTraffice has a limit of {@link #MAX_DAYS} per call.
+     * MarineTraffic has a limit of {@link #MAX_DAYS} per call.
      * This splits up the whole timespan in smaller intervals not larger than MAX_DAYS.
-     *
      * Static access for testing.
      */
     static Flux<DataInterval> intervals(LocalDateTime startTime, LocalDateTime endTime) {
@@ -106,5 +102,4 @@ public class MarineTrafficAisReader implements AisReader {
             return next;
         });
     }
-
 }
